@@ -9,9 +9,10 @@
                   <p class="editIcon" :class="{'editing':isEditing}" @click.stop="edit"><i class="fas fa-pencil-alt"></i></p>
                 </div>
                 <div class="marks">
-                  <p v-if="content.date !==''">
-                    <i class="far fa-calendar-alt"></i> {{content.date}}
-                    <span v-if="content.time !==''">{{content.time}}</span>
+                  <p v-if="content.date !=='' ||content.time !=='' || content.comment !==''">
+                    <span v-if="content.date !=='' ||content.time !=='' "><i class="far fa-calendar-alt"></i></span>
+                    <span v-if="content.date !==''"> {{content.date}}</span>
+                    <span v-if="content.time !==''"> {{content.time}}</span>
                     <span v-if="content.comment !==''"><i class="far fa-comment"></i></span>
                   </p>
                 </div>
