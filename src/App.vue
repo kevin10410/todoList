@@ -11,7 +11,7 @@
     <div class="main">
       <add-todo></add-todo>
       <ul class="todoList">
-        <todo-item v-for="(item, index) in allTodoItems" :key="item.number" :item="item" :index="index"></todo-item>
+        <todo-item v-for="item in todoItems" :key="item.number" :item="item"></todo-item>
       </ul>
     </div>
   </div>
@@ -35,7 +35,7 @@ export default {
     }
   },
   computed: {
-    allTodoItems() {
+    todoItems() {
       console.log(this.show);
       switch (this.show) {
         case "My Tasks":

@@ -9,7 +9,7 @@
                   <p class="editIcon" :class="{'editing':isEditing}" @click.stop="edit"><i class="fas fa-pencil-alt"></i></p>
                 </div>
                 <div class="marks">
-                  <p v-if="content.date !=='' ||content.time !=='' || content.comment !==''">
+                  <p v-if="content.date !=='' || content.time !=='' || content.comment !==''">
                     <span v-if="content.date !=='' ||content.time !=='' "><i class="far fa-calendar-alt"></i></span>
                     <span v-if="content.date !==''"> {{content.date}}</span>
                     <span v-if="content.time !==''"> {{content.time}}</span>
@@ -43,7 +43,7 @@
 
 <script>
 export default {
-  props: ["item", "index"],
+  props: ["item"],
   data() {
     return {
       isOpen: false,
@@ -61,13 +61,11 @@ export default {
   },
   methods: {
     toggleOpen() {
-      if(!this.isEditing) {
-        this.isOpen = !this.isOpen
+      if (!this.isEditing) {
+        this.isOpen = !this.isOpen;
       }
     },
     edit() {
-      console.log('edit', this.isEditing)
-      console.log('open', this.isOpen)
       if (!this.isEditing) {
         this.isOpen = true;
         this.isEditing = true;
@@ -80,14 +78,12 @@ export default {
       if (this.isEditing) {
         console.log("highlight");
         this.content.isHighlight = !this.content.isHighlight;
-        console.log(this.content.isHighlight);
       }
     },
     updateIsComplete() {
       if (this.isEditing) {
         console.log("complete");
         this.content.isComplete = !this.content.isComplete;
-        console.log(this.content.isComplete);
       }
     },
     cancel() {
@@ -97,15 +93,17 @@ export default {
     },
     save() {
       let index = this.$store.state.todoItems.indexOf(this.item);
+      let updateItem = {};
+      Object.assign(updateItem, this.content);
       this.$store.commit("updateTodoItem", {
-        item: this.content,
+        item: updateItem,
         index: index
       });
       this.isOpen = false;
       this.isEditing = false;
     }
   },
-  created() {
+  mounted() {
     Object.assign(this.content, this.item);
   }
 };
