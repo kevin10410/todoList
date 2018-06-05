@@ -18,7 +18,15 @@
                     <input type="time" v-model="listContent.time">
                     </div>
                     <p class="subtitle"><span><i class="far fa-file"></i></span>File</p>
-                    <div class="upload"><i class="fas fa-plus"></i></div>
+                    <div class="upload">
+                    <div v-if="listContent.fileName !== ''" class="fileInfo">
+                        <p>{{listContent.fileName}}</p>
+                        <p class="time">uploaded {{listContent.uploadTime}}</p>
+                    </div>  
+                    <label class="uploadIcon"><i class="fas fa-plus"></i>
+                      <input type="file" @change="selectFile">
+                    </label>
+                    </div>
                     <p class="subtitle"><span><i class="far fa-comment"></i></span>Comment</p>
                     <textarea class="comment" v-model="listContent.comment" placeholder="Type your memo here…"></textarea>
                 </div>
@@ -36,10 +44,12 @@ export default {
   data() {
     return {
       isAdding: false,
-      account:0,
+      account: 0,
       listContent: {
-        number:0,
+        number: 0,
         title: "",
+        fileName: "",
+        uploadTime: "",
         isHighlight: false,
         isComplete: false,
         date: "",
@@ -52,10 +62,19 @@ export default {
     addList() {
       this.isAdding = !this.isAdding;
     },
+    selectFile(event) {
+      if (event.target.files.length !== 0) {
+        let time = new Date().toISOString().slice(0, 10);
+        this.listContent.fileName = event.target.files[0].name;
+        this.listContent.uploadTime = time;
+      }
+    },
     cancel() {
       this.listContent = {
-        number: this.account,
+        number: 0,
         title: "",
+        fileName: "",
+        uploadTime: "",
         isHighlight: false,
         isComplete: false,
         date: "",
@@ -68,10 +87,12 @@ export default {
       if (this.listContent.title !== "") {
         this.$store.commit("addTodoItem", this.listContent);
         this.isAdding = false;
-        this.account ++ ;
+        this.account++;
         this.listContent = {
           number: this.account,
           title: "",
+          fileName: "",
+          uploadTime: "",
           isHighlight: false,
           isComplete: false,
           date: "",
@@ -81,7 +102,7 @@ export default {
       } else {
         window.alert("Please input Title!");
       }
-      console.log(this.$store.state.todoItems)
+      console.log(this.$store.state.todoItems);
     }
   }
 };
@@ -210,20 +231,40 @@ export default {
       }
 
       .upload {
-        display: block;
-        width: 32px;
-        height: 32px;
-        background: #c8c8c8;
-        border-radius: 2px;
-        font-size: 24px;
-        color: #ffffff;
-        line-height: 32px;
-        text-align: center;
-        margin: 11px 0 27px 75px;
-      }
+        display: flex;
+        padding: 11px 0 27px 75px;
 
-      .upload:hover {
-        background: #4a90e2;
+        .fileInfo {
+          margin-right: 10px;
+          display: flex;
+          flex-direction: column;
+          font-family: Roboto-Regular;
+          font-size: 12px;
+
+          .time {
+            color: #757575;
+          }
+        }
+
+        .uploadIcon {
+          display: block;
+          width: 32px;
+          height: 32px;
+          background: #c8c8c8;
+          border-radius: 2px;
+          font-size: 24px;
+          color: #ffffff;
+          line-height: 32px;
+          text-align: center;
+
+          input {
+            display: none;
+          }
+        }
+
+        .uploadIcon:hover {
+          background: #4a90e2;
+        }
       }
 
       .comment {

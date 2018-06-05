@@ -9,10 +9,11 @@
                   <p class="editIcon" :class="{'editing':isEditing}" @click.stop="edit"><i class="fas fa-pencil-alt"></i></p>
                 </div>
                 <div class="marks">
-                  <p v-if="content.date !=='' || content.time !=='' || content.comment !==''">
+                  <p v-if="content.date !=='' || content.time !=='' || content.comment !=='' || content.fileName !== ''">
                     <span v-if="content.date !=='' ||content.time !=='' "><i class="far fa-calendar-alt"></i></span>
                     <span v-if="content.date !==''"> {{content.date}}</span>
                     <span v-if="content.time !==''"> {{content.time}}</span>
+                    <span v-if="content.fileName !==''"><i class="far fa-file"></i></span>
                     <span v-if="content.comment !==''"><i class="far fa-comment"></i></span>
                   </p>
                 </div>
@@ -25,7 +26,15 @@
                     <input type="time" v-model="content.time" :readonly="!isEditing">
                     </div>
                     <p class="subtitle"><span><i class="far fa-file"></i></span>File</p>
-                    <div class="upload"><i class="fas fa-plus"></i></div>
+                    <div class="upload">
+                    <div v-if="content.fileName !== ''" class="fileInfo">
+                        <p>{{content.fileName}}</p>
+                        <p class="time">uploaded {{content.uploadTime}}</p>
+                    </div>  
+                    <label class="uploadIcon"><i class="fas fa-plus"></i>
+                      <input type="file" @change="selectFile">
+                    </label>
+                    </div>
                     <p class="subtitle"><span><i class="far fa-comment"></i></span>Comment</p>
                     <textarea class="comment" 
                     v-model="content.comment"
@@ -51,6 +60,8 @@ export default {
       content: {
         number: 0,
         title: "",
+        fileName: "",
+        uploadTime: "",
         isHighlight: false,
         isComplete: false,
         date: "",
@@ -84,6 +95,13 @@ export default {
       if (this.isEditing) {
         console.log("complete");
         this.content.isComplete = !this.content.isComplete;
+      }
+    },
+    selectFile(event) {
+      if (event.target.files.length !== 0) {
+        let time = new Date().toISOString().slice(0, 10);
+        this.content.fileName = event.target.files[0].name;
+        this.content.uploadTime = time;
       }
     },
     cancel() {
@@ -240,20 +258,40 @@ export default {
       }
 
       .upload {
-        display: block;
-        width: 32px;
-        height: 32px;
-        background: #c8c8c8;
-        border-radius: 2px;
-        font-size: 24px;
-        color: #ffffff;
-        line-height: 32px;
-        text-align: center;
-        margin: 11px 0 27px 75px;
-      }
+        display: flex;
+        padding: 11px 0 27px 75px;
 
-      .upload:hover {
-        background: #4a90e2;
+        .fileInfo {
+          margin-right: 10px;
+          display: flex;
+          flex-direction: column;
+          font-family: Roboto-Regular;
+          font-size: 12px;
+
+          .time {
+            color: #757575;
+          }
+        }
+
+        .uploadIcon {
+          display: block;
+          width: 32px;
+          height: 32px;
+          background: #c8c8c8;
+          border-radius: 2px;
+          font-size: 24px;
+          color: #ffffff;
+          line-height: 32px;
+          text-align: center;
+
+          input {
+            display: none;
+          }
+        }
+
+        .uploadIcon:hover {
+          background: #4a90e2;
+        }
       }
 
       .comment {
