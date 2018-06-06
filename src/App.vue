@@ -13,6 +13,7 @@
       <ul class="todoList">
         <todo-item v-for="item in todoItems" :key="item.number" :item="item"></todo-item>
       </ul>
+      <p class="tasks">{{processingItems}} tasks left</p>
     </div>
   </div>
 </template>
@@ -39,20 +40,29 @@ export default {
       console.log(this.show);
       switch (this.show) {
         case "My Tasks":
-        return this.$store.getters.getAllItems.sort((a, b) => b.isHighlight > a.isHighlight)
+          return this.$store.getters.getAllItems.sort(
+            (a, b) => b.isHighlight > a.isHighlight
+          );
           console.log(1);
           break;
         case "In Progress":
-        return this.$store.getters.getProcessingItems.sort((a, b) => b.isHighlight > a.isHighlight);
+          return this.$store.getters.getProcessingItems.sort(
+            (a, b) => b.isHighlight > a.isHighlight
+          );
           console.log(2);
           break;
         case "Completed":
-        return this.$store.getters.getCompletedItems.sort((a, b) => b.isHighlight > a.isHighlight);
+          return this.$store.getters.getCompletedItems.sort(
+            (a, b) => b.isHighlight > a.isHighlight
+          );
           console.log(3);
           break;
         default:
           console.log(4);
       }
+    },
+    processingItems() {
+      return this.$store.getters.getProcessingItems.length;
     }
   },
   components: {
@@ -111,6 +121,13 @@ header {
     margin: 24px 0 0 0;
     padding: 0;
     list-style: none;
+  }
+
+  .tasks {
+    font-family: Roboto-Italic;
+    font-size: 24px;
+    color: #c8c8c8;
+    padding-left: 32px; 
   }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <li>
+    <li draggable="true">
         <div class="itemContent">
             <div class="todoTitle" :class="{'important': content.isHighlight, 'finished': content.isComplete}" @click="toggleOpen">
                 <div class="banner">
@@ -74,6 +74,9 @@ export default {
     };
   },
   methods: {
+    drag(event) {
+      console.log(event)
+    },
     toggleOpen() {
       if (!this.isEditing) {
         this.isOpen = !this.isOpen;
