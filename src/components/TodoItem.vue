@@ -5,7 +5,10 @@
                 <div class="banner">
                   <div class="check" @click="updateIsComplete"><i class="fas fa-check"></i></div>
                   <input class="title" v-model="content.title" :readonly="!isEditing">
-                  <p class="starIcon" :class="{'highlight':content.isHighlight}" @click="updateIsHighlight"><i class="fas fa-star"></i></p>
+                  <p class="starIcon" :class="{'highlight':content.isHighlight}" @click="updateIsHighlight">
+                    <span v-if="content.isHighlight"><i class="fas fa-star"></i></span>
+                    <span v-else><i class="far fa-star"></i></span>
+                  </p>
                   <p class="editIcon" :class="{'editing':isEditing}" @click.stop="edit"><i class="fas fa-pencil-alt"></i></p>
                 </div>
                 <div class="marks">

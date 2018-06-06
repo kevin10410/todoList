@@ -7,7 +7,10 @@
             <div class="todoTitle" :class="{'important':listContent.isHighlight}">
                 <div class="check"></div>
                 <input class="title" v-model="listContent.title" placeholder="Type Something Here…">
-                <p class="starIcon" :class="{'highlight':listContent.isHighlight}" @click="listContent.isHighlight = !listContent.isHighlight"><i class="fas fa-star"></i></p>
+                <p class="starIcon" :class="{'highlight':listContent.isHighlight}" @click="listContent.isHighlight = !listContent.isHighlight">
+                  <span v-if="listContent.isHighlight"><i class="fas fa-star"></i></span>
+                  <span v-else><i class="far fa-star"></i></span>
+                </p>
                 <p class="editIcon" :class="{'editing':isAdding}"><i class="fas fa-pencil-alt"></i></p>
             </div>
             <div class="todoContent">
